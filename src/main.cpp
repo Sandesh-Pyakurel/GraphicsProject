@@ -101,6 +101,10 @@ int main()
         -0.5f, -0.5f,  0.0f,
          0.5f, -0.5f,  0.0f,  
          0.0f,  0.5f,  0.0f,  
+         // second triangle
+         1.0f,  0.5f,  0.0f,  
+         0.0f,  0.75f,  0.0f,  
+         0.5f,  0.5f,  0.0f,  
     };
 
     // using vertex array objects(VAO).
@@ -139,7 +143,7 @@ int main()
         // using the created program.
         glUseProgram(shaderPorgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 6);
 
         // check and call events and sawp the buffers
         glfwSwapBuffers(window);
