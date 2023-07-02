@@ -34,3 +34,6 @@
 # glad lib files
 glad.h
 glad.c
+
+# .vscode
+.vscode
