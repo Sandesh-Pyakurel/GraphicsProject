@@ -10,28 +10,38 @@ Mesh::Mesh(Vertex* vertices, unsigned int numVertices)
 
     std::vector<glm::vec3> positions;
     std::vector<glm::vec3> colors;
+    std::vector<glm::vec2> texcoords;
 
     positions.reserve(numVertices);
     colors.reserve(numVertices);
+    texcoords.reserve(numVertices);
 
     for (unsigned int i = 0; i < numVertices; i++)
     {
         positions.push_back(*vertices[i].GetPos());
         colors.push_back(*vertices[i].GetColor());
+        texcoords.push_back(*vertices[i].GetTexCoord());
     }
 
     glGenBuffers(NUM_BUFFERS, m_vertexArrayBuffers);
+
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[POSITION_VB]);
     glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(positions[0]), &positions[0], GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXCOORD_VB]);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[COLOR_VB]);
     glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(colors[0]), &colors[0], GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexArrayBuffers[TEXCOORD_VB]);
+    glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(texcoords[0]), &texcoords[0], GL_STATIC_DRAW);
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
     glBindVertexArray(0);
 }
