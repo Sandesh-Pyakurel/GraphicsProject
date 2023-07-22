@@ -42,9 +42,10 @@ void Shader::Bind()
 }
 
 
-void Shader::Update()
+void Shader::Update(const Transform& transform)
 {
-
+    glm::mat4 model = transform.GetModel();
+    glUniformMatrix4fv(m_uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
 }
 
 void Shader::setBool(const std::string &name, bool value) const

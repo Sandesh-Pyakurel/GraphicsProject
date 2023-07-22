@@ -7,6 +7,7 @@
 #include "mesh.hpp"
 #include "window.hpp"
 #include "texture.hpp"
+#include "transform.hpp"
 
 #define WIDTH 800
 #define HEIGHT 600
@@ -25,11 +26,13 @@ int main()
     };
 
     Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
-    Texture texture0("./res/bricks.png");
-    Texture texture1("./res/download.png");
+    Texture texture("./res/bricks.png");
+    Transform transform;
 
     shader.setInt("texture0", 0);
     shader.setInt("texture1", 1);
+
+    float counter = 0.0f;
 
    // render loop
     while (!window.IsClosed())
@@ -39,16 +42,28 @@ int main()
         window.HandleInput();
 
         // rendering commands here
+
+        float sinCounter = sinf(counter);
+        float cosCounter = cosf(counter);
+
+        transform.GetPos()->x = sinCounter;
+        transform.GetPos()->z = cosCounter;
+        transform.GetRot()->x = counter * 5;
+        transform.GetRot()->y = counter * 5;
+        transform.GetRot()->z = counter * 5;
+        transform.setScale(glm::vec3(cosCounter, cosCounter, cosCounter));
+
         
         // using the created program.
         shader.Bind();
-        shader.Update();
+        shader.Update(transform);
 
-        texture0.Bind(0);
-        texture1.Bind(1);
+        texture.Bind(0);
 
         mesh.Draw(); 
 
         window.Update();
+
+        counter += 0.005f;
     }
 }
