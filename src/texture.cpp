@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cassert>
 
 #include "texture.hpp"
 
@@ -30,6 +29,7 @@ Texture::Texture(const std::string& fileName)
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(imageData);
+    
 }
 
 Texture::~Texture()

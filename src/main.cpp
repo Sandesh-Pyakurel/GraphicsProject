@@ -20,17 +20,30 @@ int main()
 
     // input to shader.
     Vertex vertices[] = {
-        Vertex(glm::vec3(-0.5, -0.5, 0.0), glm::vec3(1.0, 0.0, 0.0), glm::vec2(0.0, 0.0)),
-        Vertex(glm::vec3(0.5, -0.5, 0.0), glm::vec3(0.0, 1.0, 0.0), glm::vec2(1.0, 0.0)),
-        Vertex(glm::vec3(0.0, 0.5, 0.0), glm::vec3(0.0, 0.0, 1.0), glm::vec2(0.5, 1.0)),
+        Vertex(glm::vec3(0.5, 0.5, 0.0), glm::vec3(1.0, 0.0, 0.0), glm::vec2(0.0, 0.0), glm::vec3(0.0, 0.0, 0.0)),
+        Vertex(glm::vec3(0.5, -0.5, 0.0), glm::vec3(0.0, 1.0, 0.0), glm::vec2(1.0, 0.0), glm::vec3(0.0, 0.0, 0.0)),
+        Vertex(glm::vec3(-0.5,-0.5, 0.0), glm::vec3(0.0, 0.0, 1.0), glm::vec2(1.0, 1.0), glm::vec3(0.0, 0.0, 0.0)),
+        Vertex(glm::vec3(-0.5, 0.5, 0.0), glm::vec3(0.0, 0.0, 1.0), glm::vec2(0.0, 1.0), glm::vec3(0.0, 0.0, 0.0)),
     };
 
-    Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
-    Texture texture("./res/bricks.png");
+    unsigned int indices[] = {
+        0, 1, 3,
+        1, 2, 3
+    };
+
+    Mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices)/sizeof(indices[0]));
+    Texture texture0("./res/smilyface.jpg");
+    Texture texture1("./res/brick.jpg");
+
     Transform transform;
 
+    shader.Bind();
     shader.setInt("texture0", 0);
     shader.setInt("texture1", 1);
+
+    // for using more texture in same mesh.
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     float counter = 0.0f;
 
@@ -53,13 +66,12 @@ int main()
         transform.GetRot()->z = counter * 5;
         transform.setScale(glm::vec3(cosCounter, cosCounter, cosCounter));
 
+        texture0.Bind(0);
+        texture1.Bind(1);
         
         // using the created program.
         shader.Bind();
         shader.Update(transform);
-
-        texture.Bind(0);
-
         mesh.Draw(); 
 
         window.Update();
