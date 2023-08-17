@@ -2,14 +2,32 @@
 
 out vec4 FragColor;
 
-in vec3 ourColor;
-in vec2 texCoord0;
+in vec2 TexCoords;
 
-uniform sampler2D texture0;
-uniform sampler2D texture1;
+uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_diffuse2;
+uniform sampler2D texture_diffuse3;
+uniform sampler2D texture_specular1;
+uniform sampler2D texture_specular2;
 
 void main()
 {
-    // FragColor = texture(texture0, texCoord0) * vec4(ourColor, 1.0);
-    FragColor = mix(texture(texture0, texCoord0), texture(texture1, texCoord0), 0.4);
+    vec3 diffuseColor1 = texture(texture_diffuse1, TexCoords).rgb;
+    vec3 diffuseColor2 = texture(texture_diffuse2, TexCoords).rgb;
+    vec3 diffuseColor3 = texture(texture_diffuse3, TexCoords).rgb;
+
+    vec3 finalDiffuseColor = (diffuseColor1 + diffuseColor2 + diffuseColor3) / 3.0;
+    
+    vec3 specularColor1 = texture(texture_specular1, TexCoords).rgb;
+    vec3 specularColor2 = texture(texture_specular2, TexCoords).rgb;
+
+    vec3 finalSpecularColor = (specularColor1 + specularColor2) / 2.0;
+
+
+    vec3 finalColor = finalDiffuseColor + 0.5 * finalSpecularColor;
+
+    FragColor = vec4(finalColor, 1.0);
+
+    // FragColor = texture(texture_diffuse1, TexCoords);
 }
+

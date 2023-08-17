@@ -9,7 +9,7 @@ LIBRARY_PATHS = -L include/lib
 
 COMPILER_FLAGS = -w
 
-LINKER_FLAGS = -lglfw -lGLEW -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl 
+LINKER_FLAGS = -lglfw -lGLEW -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl -lassimp 
 
 OBJ_NAME = main glad.o
 

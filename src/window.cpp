@@ -2,6 +2,8 @@
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+// void mouse_callback(GLFWwindow* window, double xpos, double ypos);
+// void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 
 Window::Window(int width, int height, const std::string& title)
 {
@@ -29,6 +31,8 @@ Window::Window(int width, int height, const std::string& title)
     glViewport(0, 0, 800, 600);
 
     glfwSetFramebufferSizeCallback(m_window, framebuffer_size_callback);
+    // glfwSetCursorPosCallback(m_window, mouse_callback);
+    // glfwSetScrollCallback(m_window, scroll_callback);
 
     m_isClosed = false;
 }
@@ -38,7 +42,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void Window::HandleInput()
+void Window::HandleInput(Camera camera)
 {
     if (glfwWindowShouldClose(m_window))
     {
@@ -49,7 +53,28 @@ void Window::HandleInput()
     {
         m_isClosed = true;
     }
+
+    if (glfwGetKey(m_window, GLFW_KEY_W) == GLFW_PRESS)
+        {
+            camera.ProcessKeyboard(FORWARD, this->deltaTime);
+        }
+
+    if (glfwGetKey(m_window, GLFW_KEY_S) == GLFW_PRESS)
+        camera.ProcessKeyboard(BACKWARD, deltaTime);
+    if (glfwGetKey(m_window, GLFW_KEY_A) == GLFW_PRESS)
+        camera.ProcessKeyboard(LEFT, deltaTime);
+    if (glfwGetKey(m_window, GLFW_KEY_D) == GLFW_PRESS)
+        camera.ProcessKeyboard(RIGHT, deltaTime);
 }
+
+
+void Window::CalcDeltaTime()
+{
+    float currentFrame = static_cast<float>(glfwGetTime());
+    this->deltaTime = currentFrame - lastFrame;
+    this->lastFrame = currentFrame;
+}
+
 
 void Window::Update()
 {
