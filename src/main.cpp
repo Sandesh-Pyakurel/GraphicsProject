@@ -4,6 +4,7 @@
 #include <glad/glad.h>
 #include "stb/stb_image.h"
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 
 #include "shader.hpp"
 #include "mesh.hpp"
@@ -11,8 +12,8 @@
 #include "model.hpp"
 #include "camera.hpp"
 
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 1600
+#define HEIGHT 800
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -20,7 +21,7 @@ void mouse_callback(GLFWwindow* window, double xposIn, double yposIn);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 void processInput(GLFWwindow* window);
 
-Camera camera(glm::vec3(0.0f, 0.0f, 20.0f));
+Camera camera(glm::vec3(0.0f, 0.0f, 15.0f));
 float lastX = WIDTH / 2.0f;
 float lastY = HEIGHT / 2.0f;
 bool firstMouse = true; 
@@ -81,14 +82,156 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Shader shader("./res/basicShader");
+    Shader modelShader("C:/Users/ASUS/Desktop/GraphicsProject/res/modelShader"); //change path
+    Model ourModel("C:/Users/ASUS/Desktop/GraphicsProject/res/Skull/Skull.obj"); //change path
+    
+    
+    Shader lampShader( "C:/Users/ASUS/Desktop/GraphicsProject/res/lampShader" ); //change path
+    
+    GLfloat vertices[] =
+    {
+        // Positions            // Normals              // Texture Coords
+        -0.5f, -0.5f, -0.5f,    0.0f,  0.0f, -1.0f,     0.0f,  0.0f,
+        0.5f, -0.5f, -0.5f,     0.0f,  0.0f, -1.0f,     1.0f,  0.0f,
+        0.5f,  0.5f, -0.5f,     0.0f,  0.0f, -1.0f,     1.0f,  1.0f,
+        0.5f,  0.5f, -0.5f,     0.0f,  0.0f, -1.0f,     1.0f,  1.0f,
+        -0.5f,  0.5f, -0.5f,    0.0f,  0.0f, -1.0f,     0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f,    0.0f,  0.0f, -1.0f,     0.0f,  0.0f,
+        
+        -0.5f, -0.5f,  0.5f,    0.0f,  0.0f,  1.0f,     0.0f,  0.0f,
+        0.5f, -0.5f,  0.5f,     0.0f,  0.0f,  1.0f,     1.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,     0.0f,  0.0f,  1.0f,     1.0f,  1.0f,
+        0.5f,  0.5f,  0.5f,     0.0f,  0.0f,  1.0f,  	1.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,    0.0f,  0.0f,  1.0f,     0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,    0.0f,  0.0f,  1.0f,     0.0f,  0.0f,
+        
+        -0.5f,  0.5f,  0.5f,    -1.0f,  0.0f,  0.0f,    1.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,    -1.0f,  0.0f,  0.0f,    1.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f,    -1.0f,  0.0f,  0.0f,    0.0f,  1.0f,
+        -0.5f, -0.5f, -0.5f,    -1.0f,  0.0f,  0.0f,    0.0f,  1.0f,
+        -0.5f, -0.5f,  0.5f,    -1.0f,  0.0f,  0.0f,    0.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,    -1.0f,  0.0f,  0.0f,    1.0f,  0.0f,
+        
+        0.5f,  0.5f,  0.5f,     1.0f,  0.0f,  0.0f,     1.0f,  0.0f,
+        0.5f,  0.5f, -0.5f,     1.0f,  0.0f,  0.0f,     1.0f,  1.0f,
+        0.5f, -0.5f, -0.5f,     1.0f,  0.0f,  0.0f,     0.0f,  1.0f,
+        0.5f, -0.5f, -0.5f,     1.0f,  0.0f,  0.0f,     0.0f,  1.0f,
+        0.5f, -0.5f,  0.5f,     1.0f,  0.0f,  0.0f,     0.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,     1.0f,  0.0f,  0.0f,     1.0f,  0.0f,
+        
+        -0.5f, -0.5f, -0.5f,    0.0f, -1.0f,  0.0f,     0.0f,  1.0f,
+        0.5f, -0.5f, -0.5f,     0.0f, -1.0f,  0.0f,     1.0f,  1.0f,
+        0.5f, -0.5f,  0.5f,     0.0f, -1.0f,  0.0f,     1.0f,  0.0f,
+        0.5f, -0.5f,  0.5f,     0.0f, -1.0f,  0.0f,     1.0f,  0.0f,
+        -0.5f, -0.5f,  0.5f,    0.0f, -1.0f,  0.0f,     0.0f,  0.0f,
+        -0.5f, -0.5f, -0.5f,    0.0f, -1.0f,  0.0f,     0.0f,  1.0f,
+        
+        -0.5f,  0.5f, -0.5f,    0.0f,  1.0f,  0.0f,     0.0f,  1.0f,
+        0.5f,  0.5f, -0.5f,     0.0f,  1.0f,  0.0f,     1.0f,  1.0f,
+        0.5f,  0.5f,  0.5f,     0.0f,  1.0f,  0.0f,     1.0f,  0.0f,
+        0.5f,  0.5f,  0.5f,     0.0f,  1.0f,  0.0f,     1.0f,  0.0f,
+        -0.5f,  0.5f,  0.5f,    0.0f,  1.0f,  0.0f,     0.0f,  0.0f,
+        -0.5f,  0.5f, -0.5f,    0.0f,  1.0f,  0.0f,     0.0f,  1.0f
+    };
 
-    Model ourModel("./res/nanosuit/nanosuit.obj");
+    glm::vec3 lampPosition = glm::vec3(  2.5f,   0.0f,   0.0f);
 
 
-   // render loop
+    //lamp vbo and vao
+    GLuint lampVBO, lampVAO;
+    glGenVertexArrays( 1, &lampVAO );
+    glGenBuffers( 1, &lampVBO );
+    
+    glBindBuffer( GL_ARRAY_BUFFER, lampVBO );
+    glBufferData( GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW );
+    
+    glBindVertexArray( lampVAO );
+    glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof( GLfloat ), ( GLvoid * )0 );
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer( 1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof( GLfloat ), ( GLvoid * )( 3 * sizeof( GLfloat ) ) );
+    glEnableVertexAttribArray( 1 );
+    glVertexAttribPointer( 2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof( GLfloat ), ( GLvoid * )( 6 * sizeof( GLfloat ) ) );
+    glEnableVertexAttribArray( 2 );
+    glBindVertexArray( 0 );
+
+    glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH/(float)HEIGHT, 0.1f, 100.0f);
+    
+    //track the direction of point light
+    int light_move_direction = 1; 
+    // render loop
     while (!isClosed)
     {
+
+        // Changing the position of point light
+        float  max = 2.5;
+        float inc = 0.0015;
+        if(light_move_direction == 1 && lampPosition.x > 0)
+		{
+            lampPosition.x -= inc;
+            lampPosition.y -= inc;
+            if(abs(lampPosition.x) - 0 < inc)
+            {
+                lampPosition.x = 0;
+                lampPosition.y = -max;
+                light_move_direction = 2;
+            }
+		}
+        else if(light_move_direction == 2 && lampPosition.y < 0)
+		{
+            lampPosition.y += inc;
+            lampPosition.z += inc;
+            if(abs(lampPosition.y) - 0 < inc)
+            {
+                lampPosition.y = 0;
+                lampPosition.z = max;
+                light_move_direction = 3;
+            }
+		}
+        else if(light_move_direction == 3 && lampPosition.z > 0)
+		{
+            lampPosition.x -= inc;
+            lampPosition.z -= inc;
+            if(abs(lampPosition.z) - 0 < inc)
+            {
+                lampPosition.x = -max;
+                lampPosition.z = 0;
+                light_move_direction = 4;
+            }
+		}
+        else if(light_move_direction == 4 && lampPosition.x < 0)
+		{
+            lampPosition.x += inc;
+            lampPosition.y += inc;
+            if(abs(lampPosition.x) - 0 < inc)
+            {
+                lampPosition.x = 0;
+                lampPosition.y = max;
+                light_move_direction = 5;
+            }
+		}
+        else if(light_move_direction == 5 && lampPosition.y > 0)
+		{
+            lampPosition.y -= inc;
+            lampPosition.z -= inc;
+            if(abs(lampPosition.y) - 0 < inc)
+            {
+                lampPosition.y = 0;
+                lampPosition.z = -max;
+                light_move_direction = 6;
+            }
+		}
+        else if(light_move_direction == 6 && lampPosition.z < 0)
+		{
+            lampPosition.x += inc;
+            lampPosition.z += inc;
+            if(abs(lampPosition.z) - 0 < inc)
+            {
+                lampPosition.x = max;
+                lampPosition.z = 0;
+                light_move_direction = 1;
+            }
+		}
+
         float currentFrame = static_cast<float>(glfwGetTime());
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
@@ -99,28 +242,58 @@ int main()
         glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
-        // using the created program.
-        shader.Bind();
-
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)WIDTH/(float)HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
+        // lamp shader program
+        lampShader.Bind();
 
-        shader.setMat4("projection", projection);
-        shader.setMat4("view", view);
+        lampShader.setMat4("projection", projection);
+        lampShader.setMat4("view", view);
 
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-        shader.setMat4("model", model);
+        glm::mat4 model = glm::mat4(1);
+        glBindVertexArray( lampVAO );
+        model = glm::translate(model, lampPosition);
+        model = glm::scale(model, glm::vec3( 0.151f, 0.15f, 0.15f));
+        modelShader.setMat4("model", model);
+        // Draw lamp
+        glDrawArrays( GL_TRIANGLES, 0, 36 );
+        
+        
+        // using the created program.
+        modelShader.Bind();
 
-        // shader.Update(transform);
-        ourModel.Draw(shader);
+        modelShader.getUniformLocation("light.position", lampPosition.x, lampPosition.y, lampPosition.z);
+        modelShader.getUniformLocation("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
+
+        modelShader.setVec3("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+        modelShader.setVec3("light.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+        modelShader.setVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
+
+        modelShader.setVec1("light.constant", glm::vec1(0.5f));
+        modelShader.setVec1("light.linear", glm::vec1(0.1));
+        modelShader.setVec1("light.quadratic", glm::vec1(0.05));
+
+        modelShader.setVec1("material.shininess", glm::vec1(200.0f));
+
+        modelShader.setMat4("projection", projection);
+        modelShader.setMat4("view", view);
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
+        model = glm::translate(model, glm::vec3(0.0f, -20.0f, 0.0f));
+        GLfloat angle = 80.0f;
+        model = glm::rotate( model, angle, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+        modelShader.setMat4("model", model);
+        // modelShader.Update(transform);
+        ourModel.Draw(modelShader);
+    
 
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+
+    glDeleteVertexArrays(1, &lampVAO);
+    glDeleteBuffers(1, &lampVBO);
 
     glfwTerminate();
     return 0;

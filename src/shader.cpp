@@ -8,7 +8,7 @@ Shader::Shader(const std::string& fileName)
     // creating program and shaders. And attaching shaders to program.
     m_program = glCreateProgram();
     m_shaders[0] = CreateShader(LoadShader(fileName + ".vs"), GL_VERTEX_SHADER);
-    m_shaders[1] = CreateShader(LoadShader(fileName + ".fs"), GL_FRAGMENT_SHADER);
+    m_shaders[1] = CreateShader(LoadShader(fileName + ".frag"), GL_FRAGMENT_SHADER);
 
     for (unsigned int i = 0; i < NUM_SHADERS; i++)
     {
@@ -68,6 +68,21 @@ void Shader::setMat4(const std::string &name, const glm::mat4 &mat) const
     glUniformMatrix4fv(glGetUniformLocation(m_program, name.c_str()), 1, GL_FALSE, &mat[0][0]);
 }
 
+void Shader::setVec3(const std::string &name, const glm::vec3 &vec) const
+{
+    glUniform3fv(glGetUniformLocation(m_program, name.c_str()), 1, &vec[0]);
+}
+
+void Shader::setVec1(const std::string &name, const glm::vec1 &vec) const
+{
+    glUniform1fv(glGetUniformLocation(m_program, name.c_str()), 1, &vec[0]);
+}
+
+void Shader::getUniformLocation(const std::string &name, float x, float y, float z)
+{
+    GLint PosLoc = glGetUniformLocation( m_program, name.c_str());
+    glUniform3f( PosLoc, x, y, z );
+}
 
 std::string Shader::LoadShader(const std::string& fileName)
 {

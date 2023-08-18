@@ -1,39 +1,10 @@
-# Prerequisites
-*.d
-
-# Compiled Object files
-*.slo
-*.lo
-*.o
-
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# glad lib files
-glad.h
-glad.c
-
-# .vscode
-.vscode
+bin/
+lib/
+include/assimp/
+include/GL/
+include/glad
+include/GLFW/
+include/glm/
+include/KHR/
+include/SOIL2/
+include/stb/
