@@ -8,3 +8,6 @@ include/glm/
 include/KHR/
 include/SOIL2/
 include/stb/
+glad.c
+glad.o
+.vscode/
