@@ -80,7 +80,7 @@ int main()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     Shader modelShader("C:/Users/ASUS/Desktop/GraphicsProject/res/modelShader"); //change path
-    Model ourModel("C:/Users/ASUS/Desktop/GraphicsProject/res/Skull/Skull.obj"); //change path
+    Model ourModel("C:/Users/ASUS/Desktop/GraphicsProject/res/nanosuit/nanosuit.obj"); //change path
     
     
     Shader lampShader( "C:/Users/ASUS/Desktop/GraphicsProject/res/lampShader" ); //change path
@@ -263,24 +263,37 @@ int main()
         modelShader.getUniformLocation("light.position", lampPosition.x, lampPosition.y, lampPosition.z);
         modelShader.getUniformLocation("viewPos", camera.Position.x, camera.Position.y, camera.Position.z);
 
-        modelShader.setVec3("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
+        modelShader.setMat4("projection", projection);
+        modelShader.setMat4("view", view);
+
+        //Skull
+        /*modelShader.setVec3("light.ambient", glm::vec3(0.1f, 0.1f, 0.1f));
         modelShader.setVec3("light.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
         modelShader.setVec3("light.specular", glm::vec3(1.0f, 1.0f, 1.0f));
-
         modelShader.setVec1("light.constant", glm::vec1(0.5f));
         modelShader.setVec1("light.linear", glm::vec1(0.1));
         modelShader.setVec1("light.quadratic", glm::vec1(0.05));
-
         modelShader.setVec1("material.shininess", glm::vec1(200.0f));
-
-        modelShader.setMat4("projection", projection);
-        modelShader.setMat4("view", view);
 
         model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(0.05f, 0.05f, 0.05f));
         model = glm::translate(model, glm::vec3(0.0f, -20.0f, 0.0f));
         GLfloat angle = 80.0f;
-        model = glm::rotate( model, angle, glm::vec3( 1.0f, 0.0f, 0.0f ) );
+        model = glm::rotate( model, angle, glm::vec3( 1.0f, 0.0f, 0.0f ) );*/
+
+        //nanosuit
+        modelShader.setVec3("light.ambient", glm::vec3(0.2f, 0.2f, 0.2f));
+        modelShader.setVec3("light.diffuse", glm::vec3(4.0f, 4.0f, 4.0f));
+        modelShader.setVec3("light.specular", glm::vec3(3.0f, 3.0f, 3.0f));
+        modelShader.setVec1("light.constant", glm::vec1(0.5f));
+        modelShader.setVec1("light.linear", glm::vec1(0.1));
+        modelShader.setVec1("light.quadratic", glm::vec1(0.05));
+        modelShader.setVec1("material.shininess", glm::vec1(200.0f));
+
+        model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(0.15f, 0.15f, 0.15f));
+        model = glm::translate(model, glm::vec3(0.0f, -20.0f, 0.0f));
+
         modelShader.setMat4("model", model);
         // modelShader.Update(transform);
         ourModel.Draw(modelShader);
