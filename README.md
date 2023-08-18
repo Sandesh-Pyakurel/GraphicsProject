@@ -33,6 +33,8 @@
 
 ![Image 1](https://github.com/Sandesh-Pyakurel/GraphicsProject/blob/master/result/image_1.png)
 ![Image 2](https://github.com/Sandesh-Pyakurel/GraphicsProject/blob/master/result/image_2.png)
+![Image_3](https://github.com/Sandesh-Pyakurel/GraphicsProject/blob/master/result/image_3.png)
+![Image_3](https://github.com/Sandesh-Pyakurel/GraphicsProject/blob/master/result/image_4.png)
 
 <h2>### Video</h2>
 
