@@ -36,7 +36,6 @@ bool isClosed = false;
 int main()
 {
     // glfw: initialize and configure
-    // ------------------------------
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -47,7 +46,6 @@ int main()
     #endif
 
     // glfw window creation
-    // --------------------
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "LearnOpenGL", NULL, NULL);
     if (window == NULL)
     {
@@ -61,10 +59,9 @@ int main()
     glfwSetScrollCallback(window, scroll_callback);
 
     // tell GLFW to capture our mouse
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     // glad: load all OpenGL function pointers
-    // ---------------------------------------
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         std::cout << "Failed to initialize GLAD" << std::endl;
@@ -158,6 +155,7 @@ int main()
     
     //track the direction of point light
     int light_move_direction = 1; 
+    
     // render loop
     while (!isClosed)
     {
@@ -259,7 +257,7 @@ int main()
         glDrawArrays( GL_TRIANGLES, 0, 36 );
         
         
-        // using the created program.
+        // model shader program
         modelShader.Bind();
 
         modelShader.getUniformLocation("light.position", lampPosition.x, lampPosition.y, lampPosition.z);
